@@ -30,12 +30,17 @@ let baseMaps = {
 
 // 1. Add a 2nd layer group for the tectonic plate data.
 let allEarthquakes = new L.LayerGroup();
+let tectonicPlates = new L.LayerGroup();
 
 
 // 2. Add a reference to the tectonic plates group to the overlays object.
 let overlays = {
-  "Earthquakes": allEarthquakes
-};
+  "Earthquakes": allEarthquakes,
+  "Tectonic Plates": tectonicPlates
+  };
+
+
+
 
 // Then we add a control to the map that will allow the user to change which
 // layers are visible.
@@ -108,25 +113,25 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
   allEarthquakes.addTo(map);
 
   // Here we create a legend control object.
-let legend = L.control({
+  let legend = L.control({
   position: "bottomright"
-});
+  });
 
-// Then add all the details for the legend
-legend.onAdd = function() {
-  let div = L.DomUtil.create("div", "info legend");
+  // Then add all the details for the legend
+  legend.onAdd = function() {
+    let div = L.DomUtil.create("div", "info legend");
 
-  const magnitudes = [0, 1, 2, 3, 4, 5];
-  const colors = [
-    "#98ee00",
-    "#d4ee00",
-    "#eecc00",
-    "#ee9c00",
-    "#ea822c",
-    "#ea2c2c"
-  ];
+    const magnitudes = [0, 1, 2, 3, 4, 5];
+    const colors = [
+      "#98ee00",
+      "#d4ee00",
+      "#eecc00",
+      "#ee9c00",
+      "#ea822c",
+      "#ea2c2c"
+    ];
 
-// Looping through our intervals to generate a label with a colored square for each interval.
+  // Looping through our intervals to generate a label with a colored square for each interval.
   for (var i = 0; i < magnitudes.length; i++) {
     console.log(colors[i]);
     div.innerHTML +=
@@ -138,10 +143,28 @@ legend.onAdd = function() {
 
   // Finally, we our legend to the map.
   legend.addTo(map);
+  
+// 3.
+// Accessing the Tectonicplates GeoJSON URL.
+let tectonicData = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
 
+//Create a style for the lines.
+let myStyle = {
+	color: "#ff00ff",
+	weight: 2,
+  fillColor: "red"
+  }
 
-  // 3. Use d3.json to make a call to get our Tectonic Plate geoJSON data.
-  d3.json().then(() {
-    
-  });
+// Retrieve the tectonic GeoJSON data.
+d3.json(tectonicData).then(function(data) {
+    // Creating a GeoJSON layer with the retrieved data.
+    L.geoJson(data, {
+      style: myStyle
+    }).addTo(tectonicPlates);
+        
+        // Then we add the tectonic layer to our map.
+        tectonicPlates.addTo(map);    
+
+      });      
+
 });
