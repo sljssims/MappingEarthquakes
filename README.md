@@ -15,7 +15,7 @@ To add the tectonic plate data to the map, an additional tile layer was added us
 ### Dark Layer
 ![Dark Layer](https://user-images.githubusercontent.com/87907584/142785462-3917f6a6-3231-467c-804a-a308f07c4e06.PNG)
 
-For live look at the map, please click the url. 
+
  
 
 Author: Sharona Jones
